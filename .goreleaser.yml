@@ -1,0 +1,30 @@
+builds:
+  - binary: syndicate-cli
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+
+release:
+  prerelease: auto
+
+universal_binaries:
+  - replace: true
+
+brews:
+  -
+    name: syndicate-cli
+    homepage: https://github.com/adorigi/syndicate-cli
+    tap:
+      owner: adorigi
+      name: homebrew-adorigi
+    commit_author:
+      name: adorigi
+      email: gulegulzaradnan@gmail.com
+
+checksum:
+  name_template: 'checksums.txt'

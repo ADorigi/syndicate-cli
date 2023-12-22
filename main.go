@@ -61,6 +61,8 @@ var (
 func (m model) View() string {
 	doc := strings.Builder{}
 
+	// doc.WriteString()
+
 	var renderedTabs []string
 
 	for i, t := range m.Tabs {
