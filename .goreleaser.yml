@@ -19,7 +19,7 @@ brews:
   -
     name: syndicate-cli
     homepage: https://github.com/adorigi/syndicate-cli
-    tap:
+    repository:
       owner: adorigi
       name: homebrew-adorigi
     commit_author:
