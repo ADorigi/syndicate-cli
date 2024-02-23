@@ -98,7 +98,7 @@ func (m model) View() string {
 func main() {
 
 	info := systeminfo.CollectStats()
-	tabs := []string{"System Information", "Disk Information", "Network Information"}
+	tabs := []string{"System Information", "Disk Information(BETA)", "Network Information"}
 	// tabContent := []string{"Lip Gloss Tab", "Blush Tab", "Eye Shadow Tab", "Mascara Tab", "Foundation Tab"}
 	columns := []table.Column{
 		{Title: "Property", Width: 29},
@@ -143,21 +143,32 @@ func main() {
 		table.WithHeight(2),
 	)
 
-	s := table.DefaultStyles()
-	s.Header = s.Header.
-		BorderStyle(lipgloss.NormalBorder()).
-		BorderForeground(highlightColor).
-		BorderBottom(true).
-		Bold(true)
-	s.Selected = s.Selected.
-		Foreground(lipgloss.Color("#EC9F05")).
-		Background(lipgloss.Color("#EC9F05")).
-		Bold(true)
+	// s := table.DefaultStyles()
+	// s.Header = s.Header.
+	// 	BorderStyle(lipgloss.NormalBorder()).
+	// 	BorderForeground(highlightColor).
+	// 	BorderBottom(true).
+	// 	Bold(true)
+	// s.Selected = s.Selected.
+	// 	Foreground(lipgloss.Color("#000000")).
+	// 	Background(lipgloss.Color("#EC9F05")).
+	// 	Bold(true)
+	// s.Cell = lipgloss.NewStyle().Padding(0, 1)
+
+	s := table.Styles{
+		Header:   lipgloss.NewStyle().Bold(true).Padding(0, 1).BorderBottom(true),
+		Cell:     lipgloss.NewStyle().Padding(0, 1),
+		Selected: lipgloss.NewStyle(),
+	}
 	tableSys.SetStyles(s)
 	tableDisk.SetStyles(s)
 	tableNetwork.SetStyles(s)
 
-	m := model{Tabs: tabs, TabContent: []table.Model{tableSys, tableDisk, tableNetwork}}
+	m := model{Tabs: tabs, TabContent: []table.Model{
+		tableSys,
+		tableDisk,
+		tableNetwork,
+	}}
 	if _, err := tea.NewProgram(m, tea.WithAltScreen()).Run(); err != nil {
 		fmt.Println("Error running program:", err)
 		os.Exit(1)
