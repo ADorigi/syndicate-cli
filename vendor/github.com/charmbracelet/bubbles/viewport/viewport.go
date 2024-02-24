@@ -332,17 +332,17 @@ func (m Model) updateAsModel(msg tea.Msg) (Model, tea.Cmd) {
 		}
 
 	case tea.MouseMsg:
-		if !m.MouseWheelEnabled {
+		if !m.MouseWheelEnabled || msg.Action != tea.MouseActionPress {
 			break
 		}
-		switch msg.Type {
-		case tea.MouseWheelUp:
+		switch msg.Button {
+		case tea.MouseButtonWheelUp:
 			lines := m.LineUp(m.MouseWheelDelta)
 			if m.HighPerformanceRendering {
 				cmd = ViewUp(m, lines)
 			}
 
-		case tea.MouseWheelDown:
+		case tea.MouseButtonWheelDown:
 			lines := m.LineDown(m.MouseWheelDelta)
 			if m.HighPerformanceRendering {
 				cmd = ViewDown(m, lines)
@@ -373,9 +373,10 @@ func (m Model) View() string {
 	contentWidth := w - m.Style.GetHorizontalFrameSize()
 	contentHeight := h - m.Style.GetVerticalFrameSize()
 	contents := lipgloss.NewStyle().
+		Width(contentWidth).      // pad to width.
 		Height(contentHeight).    // pad to height.
 		MaxHeight(contentHeight). // truncate height if taller.
-		MaxWidth(contentWidth).   // truncate width.
+		MaxWidth(contentWidth).   // truncate width if wider.
 		Render(strings.Join(m.visibleLines(), "\n"))
 	return m.Style.Copy().
 		UnsetWidth().UnsetHeight(). // Style size already applied in contents.
